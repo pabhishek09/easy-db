@@ -1,0 +1,14 @@
+Intended usage
+
+const easyDb = require('easy-db');
+
+easyDb.connect();
+
+easyDb.getTables();
+
+easyDb.addTable();
+
+easyDb.addDataToTable {
+
+}
+

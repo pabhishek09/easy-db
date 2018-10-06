@@ -1,0 +1,20 @@
+{
+  "name": "easy-db",
+  "version": "1.0.0",
+  "description": "A simple easy to manage db for simple projects",
+  "scripts": {
+    "test": "npm test",
+    "bundle": "webpack"
+  },
+  "author": "pabhishek.2009@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.14.116"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "babel-loader": "^8.0.4",
+    "webpack": "^4.20.2"
+  }
+}

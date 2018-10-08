@@ -4,7 +4,8 @@
   "description": "A simple easy to manage db for simple projects",
   "scripts": {
     "test": "npm test",
-    "bundle": "webpack"
+    "dev": "node run.js",
+    "bundle": "webpack --mode=development"
   },
   "author": "pabhishek.2009@gmail.com",
   "license": "ISC",
@@ -15,6 +16,10 @@
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
     "babel-loader": "^8.0.4",
-    "webpack": "^4.20.2"
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2"
   }
 }

@@ -1,22 +1,25 @@
 
-import { fs } from 'fs';
-import { path } from 'path';
+const fs = require('fs');
+const path = require('path');
 
-import { Config } from '../config';
-import { setUpCollection } from '../lib/setUpCollection';
+const Config = require('../config');
+const setUpCollection = require('./setUpCollection');
 
-  export async function connect() {
+module.exports = function connect(dbBaseUrl) {
     console.log('Inside connect function');
     const dbOptions = {};
     const dbConfig = {
-      baseDir: path.resolve(__dirname, 
+      baseDir: path.resolve(dbBaseUrl, 
         (dbOptions && dbOptions.dir) ? '.'.concat(dbOptions.dir) : Config.defaultDir),
       collection: (dbOptions && dbOptions.collection) ? dbOptions.collection : Config.defaultCollection,
       collections: [],
       data: ''
     };
-    dbConfig['collectionPath']=  path.join(dbConfig.baseDir, dbConfig.collection);
+    dbConfig['collectionPath']=  path.join(dbConfig.baseDir, dbConfig.collection).concat(Config.dataExt);
     // Ensure data directory exist
+    if (!fs.existsSync(dbConfig.baseDir)){
+      fs.mkdirSync(dbConfig.baseDir);
+    }
     fs.readdir(dbConfig.baseDir, (err, data) => {
       if (!err && data) {
         dbConfig.collections = data;
@@ -26,18 +29,6 @@ import { setUpCollection } from '../lib/setUpCollection';
         throw new Error(err);
       }
     });
-    dbConfig.data = await setUpCollection(dbConfig.collectionPath);
-
+    setUpCollection(dbConfig);
     return dbConfig;
-    // Serve collection data
-    // fs.readFile(this.dbConfig.collectionPath , 'utf-8', (err, data) => {
-    //   if (!err && data) {
-    //     this.dbConfig.data = data;
-    //     console.log('Db data resolved');
-    //     console.log(data);
-    //   } else {
-    //     console.log('Error in reading', __dirname);
-    //     throw new Error(err);
-    //   }
-    // });
   }

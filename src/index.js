@@ -1,10 +1,5 @@
-import { connect } from './core/connect';
-console.log('Root file');
-const easyDb = {
+const connect = require('./core/connect');
+
+module.exports = {
   connect: connect
-};
-console.log('Logging export');
-console.log(easyDb);
-export {
-  connect
 };

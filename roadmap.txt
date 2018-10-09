@@ -1,14 +1,27 @@
-Intended usage
+Usage
 
 const easyDb = require('easy-db');
 
 easyDb.connect();
 
-easyDb.getTables();
+Initilise an express app with two endpoints
 
-easyDb.addTable();
+1. /api
 
-easyDb.addDataToTable {
+/collections : get
+/table 
 
-}
+Collection data http://localhost:5000/data?collection='users'
 
+Table data http://localhost:5000/data?collection='users'&table='test'
+Support: 
+[Insert row, delete row, get row, update row ]
+
+2. Expose browser endpoint to interact with data
+http://localhost:5000/easyDb
+
+Refactor to support multiple tables
+
+Create two different servers - 
+One for data API's
+One for application and supported API'servers

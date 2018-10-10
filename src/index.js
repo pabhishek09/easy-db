@@ -1,6 +1,5 @@
-import { easyDb } from './db/db';
+const connect = require('./core/connect');
 
-
-exports = function easyDb(dir, collection){
-  return new EasyDB();
-}
+module.exports = {
+  connect: connect
+};

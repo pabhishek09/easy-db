@@ -1,17 +1,22 @@
-import * as _ from 'lodash';
-import { Config } from '../config';
-const path = require('path');
 const fs = require('fs');
+
+const Config = require('../config');
+const serve = require('./serve');
+
 /**
  * Read the data inside the file
  * @param  {string} dir
  * @param  {string} file
  * @param  {function} callback
  */
-export function setUpCollection(path: string) {
+module.exports = function setUpCollection(dbOptions, callback) {
+  const path = dbOptions.collectionPath;
   fs.readFile(path, 'utf-8', (err, data) => {
     if (!err && data) {
-      return data;
+      console.log('In read function');
+      console.log(data);
+      serve(data, {});
+      callback();
     } else {
       console.log(path + ' does not exist, creating with default data');
       fs.open(path, 'w', (err, fileDescriptor) => {
@@ -21,12 +26,15 @@ export function setUpCollection(path: string) {
             fs.close(fileDescriptor, function(err) {
               if (err) {
                 console.log('Error in closing', fileDescriptor);
-                throw new Error(err);
+                return new Error(err);
+              } else {
+                serve(Config.defaultData, {});
+                callback();
               }
             });
           } else {
             console.log('Error in writing file');
-            throw new Error(err);
+            return new Error(err);
           }
         })
       });

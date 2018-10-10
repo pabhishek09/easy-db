@@ -1,11 +1,10 @@
 {
   "name": "easy-db",
   "version": "1.0.0",
-  "description": "A simple easy to manage db for simple projects",
+  "description": "Manage local data for building datasets",
   "scripts": {
     "test": "npm test",
-    "dev": "node run.js",
-    "bundle": "webpack --mode=development"
+    "dev": "node run.js"
   },
   "author": "pabhishek.2009@gmail.com",
   "license": "ISC",

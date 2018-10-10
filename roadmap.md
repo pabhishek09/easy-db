@@ -1,0 +1,5 @@
+- Create two different servers - One for data API's, One for application and supported API'servers ?
+- Refactor to support multiple tables as individual json's
+- Front end setup (use service workers?, FE framework) -
+- API's - Insert row, delete row, get row, update row 
+- Project setup upgrade

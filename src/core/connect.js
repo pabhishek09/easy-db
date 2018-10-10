@@ -12,23 +12,22 @@ module.exports = function connect(dbBaseUrl) {
       baseDir: path.resolve(dbBaseUrl, 
         (dbOptions && dbOptions.dir) ? '.'.concat(dbOptions.dir) : Config.defaultDir),
       collection: (dbOptions && dbOptions.collection) ? dbOptions.collection : Config.defaultCollection,
-      collections: [],
-      data: ''
+      collections: []
     };
     dbConfig['collectionPath']=  path.join(dbConfig.baseDir, dbConfig.collection).concat(Config.dataExt);
     // Ensure data directory exist
     if (!fs.existsSync(dbConfig.baseDir)){
       fs.mkdirSync(dbConfig.baseDir);
     }
-    fs.readdir(dbConfig.baseDir, (err, data) => {
-      if (!err && data) {
-        dbConfig.collections = data;
-        console.log(data);
-      } else {
-        console.log('Error in reading directory', __dirname);
-        throw new Error(err);
-      }
+    setUpCollection(dbConfig, () => {
+      fs.readdir(dbConfig.baseDir, (err, data) => {
+        if (!err && data) {
+          dbConfig.collections = data;
+          return dbConfig;
+        } else {
+          console.log('Error in reading directory', __dirname);
+          throw new Error(err);
+        }
+      });
     });
-    setUpCollection(dbConfig);
-    return dbConfig;
   }

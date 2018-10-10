@@ -3,7 +3,7 @@ const Config = {
   defaultCollection: 'data',
   defaultTable: 'users',
   dataExt: '.json',
-  defaultData: {},
+  defaultData: {"foo": "bar"},
 }
 
 module.exports = Config;

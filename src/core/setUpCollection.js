@@ -9,14 +9,14 @@ const serve = require('./serve');
  * @param  {string} file
  * @param  {function} callback
  */
-module.exports = function setUpCollection(dbOptions) {
-  path = dbOptions.collectionPath;
+module.exports = function setUpCollection(dbOptions, callback) {
+  const path = dbOptions.collectionPath;
   fs.readFile(path, 'utf-8', (err, data) => {
     if (!err && data) {
       console.log('In read function');
       console.log(data);
       serve(data, {});
-      return data;
+      callback();
     } else {
       console.log(path + ' does not exist, creating with default data');
       fs.open(path, 'w', (err, fileDescriptor) => {
@@ -27,6 +27,9 @@ module.exports = function setUpCollection(dbOptions) {
               if (err) {
                 console.log('Error in closing', fileDescriptor);
                 return new Error(err);
+              } else {
+                serve(Config.defaultData, {});
+                callback();
               }
             });
           } else {

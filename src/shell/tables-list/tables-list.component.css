@@ -1,0 +1,11 @@
+.tables-list {
+  border-right: 2px solid black;
+}
+
+.header .nav-link {
+  display: inline-block;
+}
+
+.active {
+  font-weight: bolder;
+}

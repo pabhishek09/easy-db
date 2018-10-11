@@ -1,0 +1,9 @@
+<ul class="nav flex-column tables-list">
+  <li class="nav-item header">
+      <fa-icon [icon]="faTable"></fa-icon>
+      <a class="nav-link">Tables</a>
+  </li>
+  <li class="nav-item" *ngFor="let table of tables" [class.active]="table === activeTable">
+    <a class="nav-link">{{table}}</a>
+  </li>
+</ul>

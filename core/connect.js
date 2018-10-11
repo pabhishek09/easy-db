@@ -2,7 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const Config = require('../config');
+const Config = require('./config');
 const serve = require('./serve');
 const db = {};
 

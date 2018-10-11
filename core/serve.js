@@ -1,8 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
-
-const Config = require('../config');
+const Config = require('./config');
 const express = require('express');
 const app = express();
 const dotenv = require('dotenv');
@@ -12,10 +11,21 @@ dotenv.config();
 
 module.exports = function serve(db) { 
   const port = process.env.PORT || 3000;
-  process.env.NODE_ENV = 'dev' ? app.use(morgan('dev')) : app.use(morgan('combined'));
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
   app.listen(port, () => console.log(`EasyDb running on port ${port}!`));
+  if (process.env.NODE_ENV === 'dev') {
+    app.use(morgan('dev'))
+    app.use(function(req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Credentials", "true");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, cookies");
+        next();
+    });
+  } else {
+    app.use(morgan('combined'));
+    app.use('/shell', express.static(path.normalize(__dirname + '/../dist')));
+  }
   app.get('/tables', (req, res) => {
     res.send(db.tables);
   });
@@ -28,7 +38,7 @@ module.exports = function serve(db) {
   db.tableRoutes.forEach(table => {
    readTableData(table, createTableRoute);
   });
-  app.use('/shell', express.static(path.normalize(__dirname + '/../app/client')));
+
   fs.watch(db.baseUrl, (eventType, filename) => {
     if (filename) {
 

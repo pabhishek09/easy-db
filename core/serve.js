@@ -29,6 +29,7 @@ module.exports = function serve(db) {
   app.get('/tables', (req, res) => {
     res.send(db.tables);
   });
+  setUpTableRoute(db.baseUrl);
   db['tableRoutes'] = db.tables.map((tableName) => {
     return {
       name: tableName,
@@ -36,7 +37,7 @@ module.exports = function serve(db) {
     }
   });
   db.tableRoutes.forEach(table => {
-   readTableData(table, createTableRoute);
+  //  readTableData(table, createTableRoute);
   });
 
   fs.watch(db.baseUrl, (eventType, filename) => {
@@ -46,8 +47,20 @@ module.exports = function serve(db) {
   });
 };
 
+function setUpTableRoute(baseUrl) {
+  app.get('/table/:name', (req, res) => {
+    const name = req.params.name;
+    const tablePath = path.join(baseUrl, name).concat(Config.dataExt);
+    console.log('Fetch data for', tablePath);
+    readTableData(tablePath, (name, data) => {
+      res.send(data);
+    })
+  })
+}
+
 function readTableData(table, callback) {
-  const tablePath = table.path;
+  // const tablePath = table.path;
+  const tablePath = table;
   fs.readFile(tablePath, 'utf-8', (err, data) => {
     if (!err && data) {
       callback(table.name, data);
@@ -75,9 +88,9 @@ function readTableData(table, callback) {
 }
 
 function createTableRoute(name, data) {
-  const tableUrl = '/tables/'.concat(name);
+  const tableUrl = '/table/'.concat(name);
   console.log('Creating express route to get ', tableUrl);
-  app.get(tableUrl, (req, res) => {
-    res.send(data);
-  });
+  // app.get(tableUrl, (req, res) => {
+  //   res.send(data);
+  // });
 }

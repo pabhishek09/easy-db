@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ShellService } from './shell.service';
+import { Observable } from '../../node_modules/rxjs';
+import { ThrowStmt } from '../../node_modules/@angular/compiler';
 
 @Component({
   selector: 'app-shell',
@@ -10,6 +12,7 @@ export class ShellComponent implements OnInit {
 
   private allTables: Array<string>;
   private activeTable: string;
+  private activeTableData;
 
   constructor(private shellService: ShellService) {
   }
@@ -27,6 +30,11 @@ export class ShellComponent implements OnInit {
   }
 
   setUpDataForTable() {
+    this.shellService.getTableData(this.activeTable)
+      .subscribe((data) => {
+        this.activeTableData  = JSON.stringify(data.json());
+        console.log(this.activeTableData);
+      });
   }
 
 }
